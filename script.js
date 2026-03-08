@@ -15,17 +15,21 @@ let allIssues = []
 
 async function loadIssues() {
 
-loader.classList.remove("hidden")
+const loader = document.getElementById("loader")
+
+loader.classList.remove("hidden")  
 
 const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+
+await new Promise(resolve => setTimeout(resolve, 1000))
+
 const data = await res.json()
 
 allIssues = data.data
 
 displayIssues(allIssues)
 
-loader.classList.add("hidden")
-
+loader.classList.add("hidden") 
 }
 
 function displayIssues(issues){
