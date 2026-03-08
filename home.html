@@ -21,11 +21,14 @@
 <h2 class="text-2xl font-bold">Github Issue Tracker</h2>
 </div>
 
-<div class="flex gap-2">
+<div class="flex gap-2 items-center">
 
-<input id="searchInput" type="text"
-placeholder="Search issues"
-class="input input-bordered"/>
+<div> 
+    <label  class="input validator join-item material-symbols-outlined">
+         <img src="./assets/search_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt=""> 
+         <input id="searchInput" type="text" placeholder="search issues" /> 
+    </label>
+ </div>
 
 <button class="btn btn-primary">+ New Issue</button>
 
@@ -36,7 +39,7 @@ class="input input-bordered"/>
 <!-- TABS -->
 
 
-<div class="flex gap-3 my-6">
+<div class="flex gap-3 my-6 mx-4">
 
 <button id="allBtn" class="btn btn-primary">All</button>
 <button id="openBtn" class="btn">Open</button>
@@ -60,6 +63,8 @@ class="input input-bordered"/>
                     </div>
                 </div>
    </div>
+
+
 <!-- SPINNER -->
 
 <div id="loader" class="flex justify-center my-10 hidden">
@@ -76,3 +81,4 @@ class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
 </body>
 </html>
+

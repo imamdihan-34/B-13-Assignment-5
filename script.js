@@ -1,52 +1,4 @@
-// const treesContainer = document.getElementById('issues-container')
 
-// async function loadTrees() {
-//     const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-//     const data = await res.json();
-//     displayIssues(data.data)
-// }
-
-// function displayIssues(issues){
-//     console.log(issues)
-//     issues.forEach(issue => {
-//         console.log(issue)
-//        const card = document.createElement("div") 
-//        card.className ="card bg-white  shadow-sm"
-//        card.innerHTML =` <div class="flex justify-between items-center mb-4">
-//         <div class="bg-green-100 p-2 rounded-full">
-//           <span class="text-green-600 text-xl">
-//           <img src="./assets/Open-Status.png" alt=""></span>
-//         </div>
-
-//         <span class="bg-red-100 text-red-500 text-xs px-4 py-1 rounded-full font-semibold">
-//           HIGH
-//         </span>
-
-//       </div>
-//   <div class="card-body ">
-//     <h2 class="card-title">${issue.title}</h2>
-//     <p>${issue.description}</p>
-//     <div class="card-actions">
-//      <span class="border border-red-400 text-red-500 text-xs px-3 py-1 rounded-full">
-//            BUG
-//         </span>
-
-//         <span class="border border-yellow-400 text-yellow-500 text-xs px-3 py-1 rounded-full">
-//           🟡 HELP WANTED
-//         </span>
-//         <div class="border-t px-5 py-3 text-sm text-gray-500">
-//       <p>#1 by john_doe</p>
-//       <p>1/15/2024</p>
-//     </div>
-//     </div>
-//   </div>
-// </div> `
-// treesContainer.appendChild(card)
-// });
-
-// }
-
-// loadTrees()
 
 const issuesContainer = document.getElementById("issues-container")
 const loader = document.getElementById("loader")
@@ -87,6 +39,10 @@ issue.status === "open"
 ? "border-t-4 border-green-500"
 : "border-t-4 border-purple-500"
 
+const statusIcon = issue.status === "open"
+? `<img src="./assets/Open-Status.png" class="w-6">`
+: `<img src="../assets/Closed- Status .png" class="w-6">`;
+
 const card = document.createElement("div")
 
 card.className = `card bg-white shadow ${borderColor}`
@@ -96,8 +52,9 @@ card.innerHTML = `
 <div class="card-body">
 
 <div class="flex justify-between">
-
-<span class="text-sm font-bold">${issue.status}</span>
+<span>
+${statusIcon}
+</span>
 
 <span class="text-xs px-3 py-1 rounded bg-red-100 text-red-500">
 ${issue.priority}
@@ -105,13 +62,21 @@ ${issue.priority}
 
 </div>
 
+
 <h2 class="card-title">${issue.title}</h2>
 
-<p class="text-sm">${issue.description}</p>
+<p class="text-sm line-clamp-2 text-slate-500">${issue.description}</p>
 
 <div class="flex gap-2">
 
-<span class="badge badge-outline">${issue.label}</span>
+${issue.labels.map((label, index) => 
+`<span class="${
+index === 0 
+? "border border-red-400 text-red-500" 
+: "border border-yellow-400 text-yellow-500"
+} text-xs px-3 py-1 rounded-full">${label}</span>`
+).join("")}
+
 
 </div>
 
