@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Issues Section</title>
+<title>Github Issues</title>
+
 
 <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -76,6 +77,50 @@
 <div id="issues-container"
 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 </div>
+<dialog id="issueModal" class="modal">
+
+<div class="modal-box max-w-2xl">
+
+<h2 id="modal-title" class="text-2xl font-bold"></h2>
+
+<div class="flex gap-3 my-3 text-sm text-gray-500">
+
+<span id="modal-status"></span>
+<span id="modal-author"></span>
+<span id="modal-date"></span>
+
+</div>
+
+<div id="modal-labels" class="flex gap-2 my-3"></div>
+
+<p id="modal-description" class="text-gray-600 my-4"></p>
+
+<div class="bg-gray-100 p-4 rounded-lg flex justify-between">
+
+<div>
+<p class="text-sm text-gray-400">Assignee</p>
+<p id="modal-assignee"></p>
+</div>
+
+<div>
+<p class="text-sm text-gray-400">Priority</p>
+<span id="modal-priority" class="px-3 py-1 rounded-full text-xs bg-red-300 text-black"></span>
+</div>
+
+</div>
+
+<div class="modal-action">
+
+<form method="dialog">
+<button class="btn btn-primary">Close</button>
+</form>
+
+</div>
+
+</div>
+
+</dialog>
+
 
 <script src="./script.js"></script>
 

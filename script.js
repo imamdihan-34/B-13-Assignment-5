@@ -1,57 +1,53 @@
+const issuesContainer = document.getElementById("issues-container");
+const loader = document.getElementById("loader");
 
+const allBtn = document.getElementById("allBtn");
+const openBtn = document.getElementById("openBtn");
+const closedBtn = document.getElementById("closedBtn");
 
-const issuesContainer = document.getElementById("issues-container")
-const loader = document.getElementById("loader")
+const searchInput = document.getElementById("searchInput");
 
-const allBtn = document.getElementById("allBtn")
-const openBtn = document.getElementById("openBtn")
-const closedBtn = document.getElementById("closedBtn")
-
-const searchInput = document.getElementById("searchInput")
-
-let allIssues = []
+let allIssues = [];
 
 // load issues
 
 async function loadIssues() {
+  const loader = document.getElementById("loader");
+  loader.classList.remove("hidden");
+  const res = await fetch(
+    "https://phi-lab-server.vercel.app/api/v1/lab/issues",
+  );
 
-const loader = document.getElementById("loader")
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
-loader.classList.remove("hidden")  
+  const data = await res.json();
 
-const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+  allIssues = data.data;
 
-await new Promise(resolve => setTimeout(resolve, 1000))
+  displayIssues(allIssues);
 
-const data = await res.json()
-
-allIssues = data.data
-
-displayIssues(allIssues)
-
-loader.classList.add("hidden") 
+  loader.classList.add("hidden");
 }
 
-function displayIssues(issues){
+function displayIssues(issues) {
+  issuesContainer.innerHTML = "";
 
-issuesContainer.innerHTML = ""
+  issues.forEach((issue) => {
+    const borderColor =
+      issue.status === "open"
+        ? "border-t-4 border-green-500"
+        : "border-t-4 border-purple-500";
 
-issues.forEach(issue => {
+    const statusIcon =
+      issue.status === "open"
+        ? `<img src="./assets/Open-Status.png" class="w-6">`
+        : `<img src="../assets/Closed- Status .png" class="w-6">`;
 
-const borderColor =
-issue.status === "open"
-? "border-t-4 border-green-500"
-: "border-t-4 border-purple-500"
+    const card = document.createElement("div");
 
-const statusIcon = issue.status === "open"
-? `<img src="./assets/Open-Status.png" class="w-6">`
-: `<img src="../assets/Closed- Status .png" class="w-6">`;
+    card.className = `card bg-white shadow ${borderColor}`;
 
-const card = document.createElement("div")
-
-card.className = `card bg-white shadow ${borderColor}`
-
-card.innerHTML = `
+    card.innerHTML = `
 
 <div class="card-body">
 
@@ -73,13 +69,16 @@ ${issue.priority}
 
 <div class="flex gap-2">
 
-${issue.labels.map((label, index) => 
-`<span class="${
-index === 0 
-? "border border-red-400 text-red-500" 
-: "border border-yellow-400 text-yellow-500"
-} text-xs px-3 py-1 rounded-full">${label}</span>`
-).join("")}
+${issue.labels
+  .map(
+    (label, index) =>
+      `<span class="${
+        index === 0
+          ? "border border-red-400 text-red-500"
+          : "border border-yellow-400 text-yellow-500"
+      } text-xs px-3 py-1 rounded-full">${label}</span>`,
+  )
+  .join("")}
 
 
 </div>
@@ -94,76 +93,93 @@ index === 0
 
 </div>
 
-`
+`;
+card.addEventListener("click", () => {
+openModal(issue)
+})
+    issuesContainer.appendChild(card);
+  });
+}
+function openModal(issue){
 
-issuesContainer.appendChild(card)
+document.getElementById("modal-title").innerText = issue.title
+
+document.getElementById("modal-description").innerText = issue.description
+
+document.getElementById("modal-author").innerText = "Opened by " + issue.author
+
+document.getElementById("modal-date").innerText = issue.createdAt
+
+document.getElementById("modal-status").innerText = issue.status
+
+document.getElementById("modal-assignee").innerText = issue.author
+
+document.getElementById("modal-priority").innerText = issue.priority
+
+
+// labels
+const labelsContainer = document.getElementById("modal-labels")
+
+labelsContainer.innerHTML = ""
+
+issue.labels.forEach((label,index)=>{
+
+const span = document.createElement("span")
+
+span.className =
+index===0
+? "border border-red-400 text-red-500 text-xs px-3 py-1 rounded-full"
+: "border border-yellow-400 text-yellow-500 text-xs px-3 py-1 rounded-full"
+
+span.innerText = label
+
+labelsContainer.appendChild(span)
 
 })
+
+document.getElementById("issueModal").showModal()
 
 }
 
 
+allBtn.addEventListener("click", () => {
+  setActive(allBtn);
 
+  displayIssues(allIssues);
+});
 
-allBtn.addEventListener("click", ()=>{
+openBtn.addEventListener("click", () => {
+  setActive(openBtn);
 
-setActive(allBtn)
+  const openIssues = allIssues.filter((issue) => issue.status === "open");
 
-displayIssues(allIssues)
+  displayIssues(openIssues);
+});
 
-})
+closedBtn.addEventListener("click", () => {
+  setActive(closedBtn);
 
-openBtn.addEventListener("click", ()=>{
+  const closedIssues = allIssues.filter((issue) => issue.status === "closed");
 
-setActive(openBtn)
+  displayIssues(closedIssues);
+});
 
-const openIssues = allIssues.filter(issue => issue.status === "open")
+function setActive(btn) {
+  allBtn.classList.remove("btn-primary");
+  openBtn.classList.remove("btn-primary");
+  closedBtn.classList.remove("btn-primary");
 
-displayIssues(openIssues)
-
-})
-
-closedBtn.addEventListener("click", ()=>{
-
-setActive(closedBtn)
-
-const closedIssues = allIssues.filter(issue => issue.status === "closed")
-
-displayIssues(closedIssues)
-
-})
-
-
-
-function setActive(btn){
-
-allBtn.classList.remove("btn-primary")
-openBtn.classList.remove("btn-primary")
-closedBtn.classList.remove("btn-primary")
-
-btn.classList.add("btn-primary")
-
+  btn.classList.add("btn-primary");
 }
 
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase();
 
+  const filtered = allIssues.filter((issue) =>
+    issue.title.toLowerCase().includes(value),
+  );
 
+  displayIssues(filtered);
+});
 
-searchInput.addEventListener("input", ()=>{
-
-const value = searchInput.value.toLowerCase()
-
-const filtered = allIssues.filter(issue =>
-issue.title.toLowerCase().includes(value)
-)
-
-displayIssues(filtered)
-
-})
-
-
-
-
-loadIssues()
-
-
-
+loadIssues();
