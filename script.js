@@ -95,35 +95,25 @@ ${issue.labels
   });
 }
 document.getElementById("openBtn").addEventListener("click", () => {
-const openIssues = allIssues.filter(issue => issue.status === "open")
-
-displayIssues(openIssues)
-
+  const openIssues = allIssues.filter(issue => issue.status === "open")
+  displayIssues(openIssues)
 document.getElementById("issue-count").innerText = openIssues.length
 
 })
-document.getElementById("closedBtn").addEventListener("click", () => {
+  document.getElementById("closedBtn").addEventListener("click", () => {
+  const closedIssues = allIssues.filter(issue => issue.status === "closed")
+  displayIssues(closedIssues)
 
-const closedIssues = allIssues.filter(issue => issue.status === "closed")
-
-displayIssues(closedIssues)
-
-document.getElementById("issue-count").innerText = closedIssues.length
-
-})
+  document.getElementById("issue-count").innerText = closedIssues.length
+  })
 document.getElementById("allBtn").addEventListener("click", () => {
-
-displayIssues(allIssues)
-
-document.getElementById("issue-count").innerText = allIssues.length
-
+  displayIssues(allIssues)
+  document.getElementById("issue-count").innerText = allIssues.length
 })
+
 async function loadIssues(){
-
-const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-
-const data = await res.json()
-
+  const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+  const data = await res.json()
 allIssues = data.data
 
 displayIssues(allIssues)
@@ -133,8 +123,7 @@ updateIssueCounts(allIssues)
 }
 
 function openModal(issue) {
-  document.getElementById("modal-title").innerText = issue.title;
-
+    document.getElementById("modal-title").innerText = issue.title;
   document.getElementById("modal-description").innerText = issue.description;
 
   document.getElementById("modal-author").innerText =
@@ -148,11 +137,9 @@ function openModal(issue) {
 
   document.getElementById("modal-priority").innerText = issue.priority;
 
-  // labels
+
   const labelsContainer = document.getElementById("modal-labels");
-
-  labelsContainer.innerHTML = "";
-
+   labelsContainer.innerHTML = "";
   issue.labels.forEach((label, index) => {
     const span = document.createElement("span");
 
@@ -161,8 +148,7 @@ function openModal(issue) {
         ? "border border-red-400 text-red-500 text-xs px-3 py-1 rounded-full"
         : "border border-yellow-400 text-yellow-500 text-xs px-3 py-1 rounded-full";
 
-    span.innerText = label;
-
+     span.innerText = label;
     labelsContainer.appendChild(span);
   });
 
@@ -179,8 +165,7 @@ openBtn.addEventListener("click", () => {
   setActive(openBtn);
 
   const openIssues = allIssues.filter((issue) => issue.status === "open");
-
-  displayIssues(openIssues);
+   displayIssues(openIssues);
 });
 
 closedBtn.addEventListener("click", () => {
