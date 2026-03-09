@@ -47,7 +47,7 @@ function displayIssues(issues) {
     const statusIcon =
       issue.status === "open"
         ? `<img src="./assets/Open-Status.png" class="w-6">`
-        : `<img src="./assets/Closed- Status .png" class="w-6">`;
+        : `<img src="./assets/close-status.png" class="w-6">`;
 
     const card = document.createElement("div");
     card.className = `card bg-white shadow ${borderColor}`;
