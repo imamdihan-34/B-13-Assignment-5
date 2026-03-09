@@ -29,4 +29,10 @@
         If the function returns false, the item is skipped.
 
    #Fo each: forEach() is use when we specifically want to change each elements of an array or object.
-   
+
+   # Ans-4:
+    -> arrow function is shorter syntax by using this I can compare a function smaller and easier way .
+    Arrow functions allow you to write even less code in specific situations.
+
+   # Ans-5:
+    -->Template literals are strings in JavaScript written with backticks ( ) that allow embedded variables and expressions using ${} and support multi-line strings.
