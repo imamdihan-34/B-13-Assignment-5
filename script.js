@@ -119,6 +119,45 @@ ${issue.labels
     issuesContainer.appendChild(card);
   });
 }
+document.getElementById("openBtn").addEventListener("click", () => {
+
+const openIssues = allIssues.filter(issue => issue.status === "open")
+
+displayIssues(openIssues)
+
+document.getElementById("issue-count").innerText = openIssues.length
+
+})
+document.getElementById("closedBtn").addEventListener("click", () => {
+
+const closedIssues = allIssues.filter(issue => issue.status === "closed")
+
+displayIssues(closedIssues)
+
+document.getElementById("issue-count").innerText = closedIssues.length
+
+})
+document.getElementById("allBtn").addEventListener("click", () => {
+
+displayIssues(allIssues)
+
+document.getElementById("issue-count").innerText = allIssues.length
+
+})
+async function loadIssues(){
+
+const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+
+const data = await res.json()
+
+allIssues = data.data
+
+displayIssues(allIssues)
+
+updateIssueCounts(allIssues)
+
+}
+
 function openModal(issue) {
   document.getElementById("modal-title").innerText = issue.title;
 
