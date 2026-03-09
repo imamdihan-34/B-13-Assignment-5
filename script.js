@@ -10,15 +10,12 @@ const searchInput = document.getElementById("searchInput");
 let allIssues = [];
 
 // load issues
-
 async function loadIssues() {
-  const loader = document.getElementById("loader");
   loader.classList.remove("hidden");
+
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const data = await res.json();
 
@@ -28,6 +25,28 @@ async function loadIssues() {
 
   loader.classList.add("hidden");
 }
+document.getElementById("openBtn").addEventListener("click", () => {
+  loader.classList.remove("hidden");
+
+  setTimeout(() => {
+    const openIssues = allIssues.filter((issue) => issue.status === "open");
+
+    displayIssues(openIssues);
+
+    loader.classList.add("hidden");
+  }, 200);
+});
+document.getElementById("closedBtn").addEventListener("click", () => {
+  loader.classList.remove("hidden");
+
+  setTimeout(() => {
+    const closedIssues = allIssues.filter((issue) => issue.status === "closed");
+
+    displayIssues(closedIssues);
+
+    loader.classList.add("hidden");
+  }, 200);
+});
 
 function displayIssues(issues) {
   issuesContainer.innerHTML = "";
@@ -94,53 +113,48 @@ ${issue.labels
 </div>
 
 `;
-card.addEventListener("click", () => {
-openModal(issue)
-})
+    card.addEventListener("click", () => {
+      openModal(issue);
+    });
     issuesContainer.appendChild(card);
   });
 }
-function openModal(issue){
+function openModal(issue) {
+  document.getElementById("modal-title").innerText = issue.title;
 
-document.getElementById("modal-title").innerText = issue.title
+  document.getElementById("modal-description").innerText = issue.description;
 
-document.getElementById("modal-description").innerText = issue.description
+  document.getElementById("modal-author").innerText =
+    "Opened by " + issue.author;
 
-document.getElementById("modal-author").innerText = "Opened by " + issue.author
+  document.getElementById("modal-date").innerText = issue.createdAt;
 
-document.getElementById("modal-date").innerText = issue.createdAt
+  document.getElementById("modal-status").innerText = issue.status;
 
-document.getElementById("modal-status").innerText = issue.status
+  document.getElementById("modal-assignee").innerText = issue.author;
 
-document.getElementById("modal-assignee").innerText = issue.author
+  document.getElementById("modal-priority").innerText = issue.priority;
 
-document.getElementById("modal-priority").innerText = issue.priority
+  // labels
+  const labelsContainer = document.getElementById("modal-labels");
 
+  labelsContainer.innerHTML = "";
 
-// labels
-const labelsContainer = document.getElementById("modal-labels")
+  issue.labels.forEach((label, index) => {
+    const span = document.createElement("span");
 
-labelsContainer.innerHTML = ""
+    span.className =
+      index === 0
+        ? "border border-red-400 text-red-500 text-xs px-3 py-1 rounded-full"
+        : "border border-yellow-400 text-yellow-500 text-xs px-3 py-1 rounded-full";
 
-issue.labels.forEach((label,index)=>{
+    span.innerText = label;
 
-const span = document.createElement("span")
+    labelsContainer.appendChild(span);
+  });
 
-span.className =
-index===0
-? "border border-red-400 text-red-500 text-xs px-3 py-1 rounded-full"
-: "border border-yellow-400 text-yellow-500 text-xs px-3 py-1 rounded-full"
-
-span.innerText = label
-
-labelsContainer.appendChild(span)
-
-})
-
-document.getElementById("issueModal").showModal()
-
+  document.getElementById("issueModal").showModal();
 }
-
 
 allBtn.addEventListener("click", () => {
   setActive(allBtn);
